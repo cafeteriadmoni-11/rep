@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- A-Frame y MindAR para Realidad Aumentada en Web -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <style>
@@ -11,7 +10,6 @@
 </head>
 <body>
 
-  <!-- Escena de AR -->
   <a-scene 
     mindar-image="imageTargetSrc: ./vineta-target.mind;" 
     color-space="sRGB" 
@@ -19,39 +17,49 @@
     vr-mode-ui="enabled: false" 
     device-orientation-permission-ui="enabled: false">
     
-    <a-assets>
-      <!-- Tu modelo 3D o personaje (.gltf / .glb) -->
-      <a-asset-item id="personajeModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/bear/scene.gltf"></a-asset-item>
-    </a-assets>
-
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <!-- targetIndex: 0 (Corresponde a la primera viñeta) -->
-    <a-entity id="vineta-1" mindar-image-target="targetIndex: 0">
-      <!-- Objeto 3D que aparece sobre la viñeta -->
-      <a-gltf-model 
-        src="#personajeModel" 
-        position="0 0 0" 
-        scale="0.05 0.05 0.05" 
-        rotation="90 0 0">
-      </a-gltf-model>
-    </a-entity>
+    <!-- AL ESCANEAR LA VIÑETA DE LA PROFESORA -->
+    <a-entity mindar-image-target="targetIndex: 0">
+      
+      <!-- Título flotante 3D sobre la viñeta -->
+      <a-text 
+        value="¡INICIO DEL VIAJE EN EL TIEMPO!" 
+        color="#FFD700" 
+        align="center" 
+        position="0 0.85 0" 
+        scale="0.65 0.65 0.65">
+      </a-text>
 
+      <!-- Panel informativo con el tema -->
+      <a-plane position="0 -0.65 0.1" width="1.6" height="0.35" color="#0f172a" opacity="0.9">
+        <a-text 
+          value="Modulo 1: Filosofia Educativa a traves de la Historia" 
+          color="#38bdf8" 
+          align="center" 
+          width="2">
+        </a-text>
+      </a-plane>
+
+      <!-- Elemento 3D: Anillo de Portal del Tiempo giratorio -->
+      <a-torus 
+        position="0 0.1 0.2" 
+        radius="0.35" 
+        radius-tubular="0.015" 
+        color="#ec4899"
+        animation="property: rotation; to: 0 0 360; loop: true; dur: 3000">
+      </a-torus>
+
+      <!-- Esfera del Tiempo flotando en el centro -->
+      <a-sphere 
+        position="0 0.1 0.2" 
+        radius="0.1" 
+        color="#a855f7"
+        animation="property: position; to: 0 0.18 0.2; dir: alternate; loop: true; dur: 1500">
+      </a-sphere>
+
+    </a-entity>
   </a-scene>
 
-  <script>
-    // Código JS para detectar cuando el teléfono escanea la viñeta
-    const vineta = document.querySelector('#vineta-1');
-    
-    // Evento: La cámara detecta la viñeta de la historieta
-    vineta.addEventListener("targetFound", () => {
-      console.log("¡Viñeta detectada!");
-    });
-
-    // Evento: El lector mueve la cámara y deja de ver la viñeta
-    vineta.addEventListener("targetLost", () => {
-      console.log("Viñeta fuera de vista");
-    });
-  </script>
 </body>
 </html>
